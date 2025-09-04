@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title User Card
+  body
+    .user-card
+      h4 #{loggedUser.name.first} #{loggedUser.name.last.toUpperCase()} 
+        small (#{loggedUser.age} years old)
+      p Born on #{loggedUser.birthdate.toLocaleDateString('en-GB')}
+      p Lives in 
+        strong #{loggedUser.location.city}, #{loggedUser.location.zipcode}
+      if loggedUser.isAdmin
+        span.badge-admin Is administrator
