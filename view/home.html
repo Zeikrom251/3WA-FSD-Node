@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/users">Users</a>
+    </nav>
+    <main>
+      <form action="/add" method="POST">
+        <label>Name: <input type="text" name="name" required /></label>
+        <label>Date: <input type="date" name="birth" required /></label>
+        <button type="submit">Add</button>
+      </form>
+    </main>
+  </body>
+</html>

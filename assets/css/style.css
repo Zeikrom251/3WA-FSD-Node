@@ -1,0 +1,129 @@
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav {
+  margin: 2rem 0 1.5rem 0;
+  background: #fff;
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+nav a {
+  margin: 0 1.2rem;
+  text-decoration: none;
+  color: #2d3a4a;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+nav a:hover {
+  color: #4f8cff;
+}
+
+main {
+  background: #fff;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(80, 120, 200, 0.1);
+  min-width: 340px;
+  margin-bottom: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+form label {
+  font-weight: 500;
+  color: #2d3a4a;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+form input[type="text"],
+form input[type="date"] {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d0d7e2;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s;
+}
+form input[type="text"]:focus,
+form input[type="date"]:focus {
+  border: 1.5px solid #4f8cff;
+  outline: none;
+}
+
+form button,
+button {
+  background: linear-gradient(90deg, #4f8cff 0%, #6a82fb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(80, 120, 200, 0.08);
+  transition: background 0.2s, transform 0.1s;
+}
+form button:hover,
+button:hover {
+  background: linear-gradient(90deg, #357ae8 0%, #4f8cff 100%);
+  transform: translateY(-2px) scale(1.04);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  margin: 0.7rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border-radius: 7px;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 1px 4px rgba(80, 120, 200, 0.06);
+  font-size: 1.08rem;
+}
+li form {
+  display: inline;
+  margin: 0;
+}
+li a {
+  margin-right: 0.7rem;
+  color: #4f8cff;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+li a:hover {
+  color: #357ae8;
+}
+button {
+  margin-left: 0.2rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+button:hover {
+  background: #c0392b;
+  transform: translateY(-1px) scale(1.04);
+}

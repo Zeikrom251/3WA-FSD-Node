@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Users</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/users">Users</a>
+    </nav>
+    <main>
+      <ul>
+        <% students.forEach(function(student) { %>
+        <li>
+          <%= student.name %> <%= student.birth %>
+          <a href="/edit?name=<%= encodeURIComponent(student.name) %>">
+            Edit
+          </a>
+          <form action="/delete" method="POST" style="display: inline">
+            <input type="hidden" name="name" value="<%= student.name %>" />
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+        <% }) %>
+      </ul>
+    </main>
+  </body>
+</html>

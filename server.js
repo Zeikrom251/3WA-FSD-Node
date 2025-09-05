@@ -1,107 +1,58 @@
-const http = require("http")
-const fs = require("fs")
+require("dotenv").config()
+const express = require("express")
 const path = require("path")
-const pug = require("pug")
-const querystring = require("querystring")
-const saveContactRequest = require("./utils/saveContactRequest")
+const {
+  formatBirthdays,
+  addStudent,
+  deleteStudent,
+  getStudents,
+  editStudent,
+} = require("./utils")
 
-const PORT = 3000
+const app = express()
+app.use(express.urlencoded({ extended: true }))
+app.use("/assets", express.static(path.join(__dirname, "assets")))
 
-function getMenuItems(activePath) {
-  return [
-    { path: "/", title: "Home", isActive: activePath === "/" },
-    { path: "/about-me", title: "About", isActive: activePath === "/about-me" },
-    {
-      path: "/references",
-      title: "References",
-      isActive: activePath === "/references",
-    },
-    {
-      path: "/contact-me",
-      title: "Contact",
-      isActive: activePath === "/contact-me",
-    },
-  ]
-}
+app.set("view engine", "html")
+app.engine("html", require("ejs").renderFile)
 
-const server = http.createServer((req, res) => {
-  // Static files
-  if (req.url.startsWith("/public/")) {
-    const filePath = path.join(__dirname, req.url)
-    fs.readFile(filePath, (err, data) => {
-      if (err) {
-        res.writeHead(404)
-        res.end("Not found")
-      } else {
-        // Simple content-type detection
-        const ext = path.extname(filePath)
-        const types = {
-          ".css": "text/css",
-          ".js": "application/javascript",
-          ".png": "image/png",
-          ".jpg": "image/jpeg",
-          ".ico": "image/x-icon",
-        }
-        res.writeHead(200, {
-          "Content-Type": types[ext] || "application/octet-stream",
-        })
-        res.end(data)
-      }
-    })
-    return
-  }
-
-  // GET /contact-me
-  if (req.url === "/contact-me" && req.method === "GET") {
-    const html = pug.renderFile(path.join(__dirname, "view", "contact.pug"), {
-      menuItems: getMenuItems("/contact-me"),
-    })
-    res.writeHead(200, { "Content-Type": "text/html" })
-    res.end(html)
-    return
-  }
-
-  // POST /contact-me
-  if (req.url === "/contact-me" && req.method === "POST") {
-    let body = ""
-    req.on("data", (chunk) => {
-      body += chunk.toString()
-    })
-    req.on("end", () => {
-      const data = querystring.parse(body)
-      if (data.email && data.message) {
-        saveContactRequest(data.email, data.message)
-        // Afficher la home avec un toast
-        const html = pug.renderFile(path.join(__dirname, "view", "index.pug"), {
-          menuItems: getMenuItems("/"),
-          toast: "Votre demande de contact a bien été envoyée !",
-        })
-        res.writeHead(200, { "Content-Type": "text/html" })
-        res.end(html)
-      } else {
-        res.writeHead(400, { "Content-Type": "text/plain" })
-        res.end("Missing fields")
-      }
-    })
-    return
-  }
-
-  // Home page
-  if (req.url === "/" || req.url === "/index.html") {
-    const html = pug.renderFile(path.join(__dirname, "view", "index.pug"), {
-      menuItems: getMenuItems("/"),
-      toast: null,
-    })
-    res.writeHead(200, { "Content-Type": "text/html" })
-    res.end(html)
-    return
-  }
-
-  // 404
-  res.writeHead(404, { "Content-Type": "text/plain" })
-  res.end("Page not found")
+app.get("/edit", (req, res) => {
+  const { name } = req.query
+  const students = getStudents()
+  const student = students.find((s) => s.name === name)
+  if (!student) return res.redirect("/users")
+  res.render(path.join(__dirname, "view/edit.html"), { student })
 })
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`)
+app.post("/edit", (req, res) => {
+  const { oldName, name, birth } = req.body
+  editStudent(oldName, name, birth)
+  res.redirect("/users")
+})
+
+app.get("/", (req, res) => {
+  res.render(path.join(__dirname, "view/home.html"))
+})
+
+app.get("/users", (req, res) => {
+  const students = getStudents()
+  res.render(path.join(__dirname, "view/users.html"), {
+    students: formatBirthdays(students),
+  })
+})
+
+app.post("/add", (req, res) => {
+  addStudent(req.body.name, req.body.birth)
+  res.redirect("/users")
+})
+
+app.post("/delete", (req, res) => {
+  deleteStudent(req.body.name)
+  res.redirect("/users")
+})
+
+const PORT = process.env.APP_PORT || 3000
+const HOST = process.env.APP_LOCALHOST || "localhost"
+app.listen(PORT, () => {
+  console.log(`Server running: http://${HOST}:${PORT}`)
 })
